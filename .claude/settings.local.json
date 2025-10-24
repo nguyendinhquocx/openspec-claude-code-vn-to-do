@@ -6,7 +6,11 @@
       "Bash(openspec validate:*)",
       "Bash(openspec show:*)",
       "Bash(openspec:*)",
-      "Read(//d/pcloud/code/ai/experts/experts/**)"
+      "Read(//d/pcloud/code/ai/experts/experts/**)",
+      "Bash(if [ -d \"add-todo-app\" ])",
+      "Bash(then cp -r add-todo-app \"archive/2025-10-24-add-todo-app\")",
+      "Bash(else echo \"Source not found\")",
+      "Bash(fi)"
     ],
     "deny": [],
     "ask": []
