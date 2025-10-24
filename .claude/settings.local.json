@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(mkdir:*)",
+      "Bash(openspec validate:*)",
+      "Bash(openspec show:*)",
+      "Bash(openspec:*)",
+      "Read(//d/pcloud/code/ai/experts/experts/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
