@@ -12,6 +12,13 @@ const TodoApp = (() => {
     const taskInput = document.getElementById('taskInput');
     const taskList = document.getElementById('taskList');
     const emptyState = document.getElementById('emptyState');
+    const completedSection = document.getElementById('completedSection');
+    const completedHeader = document.getElementById('completedHeader');
+    const completedTitle = document.getElementById('completedTitle');
+    const completedList = document.getElementById('completedList');
+
+    // Collapse state
+    let isCompletedExpanded = false;
 
     /**
      * Tạo ID duy nhất cho task mới
@@ -100,6 +107,71 @@ const TodoApp = (() => {
      */
     function getAllTasks() {
         return tasks;
+    }
+
+    /**
+     * Lấy tasks pending (chưa hoàn thành)
+     * Theo spec: task-management/spec.md - Filter pending tasks
+     */
+    function getPendingTasks() {
+        return tasks.filter(task => !task.completed);
+    }
+
+    /**
+     * Lấy tasks completed (đã hoàn thành)
+     * Theo spec: task-management/spec.md - Filter completed tasks
+     */
+    function getCompletedTasks() {
+        return tasks.filter(task => task.completed);
+    }
+
+    /**
+     * Đếm số lượng tasks completed
+     * Theo spec: task-management/spec.md - Count completed tasks
+     */
+    function getCompletedCount() {
+        return tasks.filter(task => task.completed).length;
+    }
+
+    /**
+     * Toggle collapse/expand completed section
+     * Theo spec: ui-interface/spec.md - Collapse State Persistence
+     */
+    function toggleCompletedSection() {
+        isCompletedExpanded = !isCompletedExpanded;
+
+        // Update UI
+        if (isCompletedExpanded) {
+            completedHeader.classList.add('expanded');
+            completedList.style.display = 'block';
+        } else {
+            completedHeader.classList.remove('expanded');
+            completedList.style.display = 'none';
+        }
+
+        // Lưu state vào LocalStorage
+        localStorage.setItem('completedSectionCollapsed', JSON.stringify(!isCompletedExpanded));
+    }
+
+    /**
+     * Restore collapse state từ LocalStorage
+     */
+    function restoreCollapseState() {
+        const collapsed = localStorage.getItem('completedSectionCollapsed');
+        if (collapsed !== null) {
+            isCompletedExpanded = !JSON.parse(collapsed);
+        } else {
+            isCompletedExpanded = false; // Mặc định collapsed
+        }
+
+        // Apply state
+        if (isCompletedExpanded) {
+            completedHeader.classList.add('expanded');
+            completedList.style.display = 'block';
+        } else {
+            completedHeader.classList.remove('expanded');
+            completedList.style.display = 'none';
+        }
     }
 
     /**
@@ -230,24 +302,44 @@ const TodoApp = (() => {
 
     /**
      * Render toàn bộ danh sách tasks
-     * Theo spec UI: hiển thị theo thứ tự mới nhất trên cùng
+     * Theo spec UI: phân tách pending và completed tasks
      */
     function renderTasks() {
+        // Get pending and completed tasks
+        const pendingTasks = getPendingTasks();
+        const completedTasks = getCompletedTasks();
+
         // Clear danh sách hiện tại
         taskList.innerHTML = '';
+        completedList.innerHTML = '';
 
-        // Hiển thị/ẩn empty state
-        if (tasks.length === 0) {
+        // Render pending tasks
+        if (pendingTasks.length === 0) {
             emptyState.style.display = 'block';
             taskList.style.display = 'none';
         } else {
             emptyState.style.display = 'none';
             taskList.style.display = 'block';
 
-            // Render từng task
-            tasks.forEach(task => {
+            pendingTasks.forEach(task => {
                 const taskElement = renderTask(task);
                 taskList.appendChild(taskElement);
+            });
+        }
+
+        // Render completed section
+        if (completedTasks.length === 0) {
+            completedSection.style.display = 'none';
+        } else {
+            completedSection.style.display = 'block';
+
+            // Update counter
+            completedTitle.textContent = `Đã hoàn thành (${completedTasks.length})`;
+
+            // Render completed tasks
+            completedTasks.forEach(task => {
+                const taskElement = renderTask(task);
+                completedList.appendChild(taskElement);
             });
         }
     }
@@ -276,11 +368,15 @@ const TodoApp = (() => {
         // Load tasks từ storage
         tasks = TaskStorage.loadTasks();
 
+        // Restore collapse state
+        restoreCollapseState();
+
         // Render initial state
         renderTasks();
 
         // Setup event listeners
         taskForm.addEventListener('submit', handleFormSubmit);
+        completedHeader.addEventListener('click', toggleCompletedSection);
 
         console.log('[App] Initialized với', tasks.length, 'tasks');
     }

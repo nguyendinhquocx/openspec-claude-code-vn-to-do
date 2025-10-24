@@ -1,17 +1,6 @@
-# ui-interface Specification
+# UI Interface Specification - Improvements
 
-## Purpose
-TBD - created by archiving change add-todo-app. Update Purpose after archive.
-## Requirements
-### Requirement: Giao Diện Tối Giản
-Hệ thống MUST có giao diện đơn giản, sạch sẽ, dễ sử dụng theo triết lý minimal design.
-
-#### Scenario: Layout cơ bản
-- **WHEN** người dùng mở app
-- **THEN** hiển thị header với tiêu đề "To-Do App"
-- **THEN** hiển thị form nhập task ở vị trí dễ thấy
-- **THEN** hiển thị danh sách tasks bên dưới form
-- **THEN** background màu trắng, text màu đen, không có icon không cần thiết
+## MODIFIED Requirements
 
 ### Requirement: Form Nhập Task
 Hệ thống MUST cung cấp form nhập liệu tối giản tuyệt đối - chỉ input field, không button.
@@ -43,56 +32,7 @@ Hệ thống MUST phân tách rõ ràng tasks chưa hoàn thành và đã hoàn 
 - **THEN** hiển thị message "Không có task nào. Nhập ở trên để bắt đầu."
 - **THEN** KHÔNG ẩn section completed nếu có tasks completed
 
-### Requirement: Responsive Design
-Hệ thống MUST hoạt động tốt trên cả desktop và mobile.
-
-#### Scenario: Hiển thị trên desktop
-- **WHEN** màn hình rộng hơn 768px
-- **THEN** container có max-width 600px và căn giữa
-- **THEN** padding và spacing thoải mái
-
-#### Scenario: Hiển thị trên mobile
-- **WHEN** màn hình nhỏ hơn 768px
-- **THEN** container full width với padding 16px
-- **THEN** nút và controls vẫn đủ lớn để touch dễ dàng (min 44px)
-- **THEN** text vẫn đọc được, không bị cắt
-
-### Requirement: Typography
-Hệ thống MUST sử dụng font chữ rõ ràng và dễ đọc, với thứ bậc tối thiểu nhưng rõ ràng.
-
-#### Scenario: Font system
-- **WHEN** render bất kỳ text nào
-- **THEN** sử dụng font family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif (dùng font hệ thống để tải nhanh)
-- **THEN** header sử dụng font-size 24px, font-weight 600, line-height 1.2
-- **THEN** task text sử dụng font-size 16px, font-weight 400, line-height 1.6
-- **THEN** màu text chính là #000 (đen thuần), text phụ là #999
-
-### Requirement: Spacing System Base-8
-Hệ thống MUST sử dụng spacing system dựa trên bội số của 8px để tạo nhịp điệu thị giác nhất quán.
-
-#### Scenario: Spacing scale
-- **WHEN** áp dụng margin hoặc padding
-- **THEN** chỉ sử dụng các giá trị: 8px, 16px, 24px, 32px, 48px, 64px
-- **THEN** không sử dụng giá trị lẻ (ví dụ: 15px, 20px, 25px)
-- **THEN** khoảng trắng giữa sections là 32px
-- **THEN** khoảng trắng giữa elements liên quan là 16px
-- **THEN** khoảng trắng giữa items trong list là 8px
-
-#### Scenario: Khoảng trắng như sự xa xỉ
-- **WHEN** thiết kế layout tổng thể
-- **THEN** container có max-width 560px (70ch) để dễ đọc
-- **THEN** padding ngoài cùng là 24px (mobile) hoặc 32px (desktop)
-- **THEN** không nén chật layout - ưu tiên khoảng trống hơn nhiều thông tin
-
-### Requirement: Trạng Thái Trống
-Hệ thống MUST hiển thị trạng thái trống (empty state) một cách hữu ích, hướng dẫn hành động thay vì trang trí.
-
-#### Scenario: Danh sách tasks trống
-- **WHEN** chưa có task nào trong danh sách
-- **THEN** hiển thị text "Không có task nào. Nhập ở trên để bắt đầu." với màu xám (#999)
-- **THEN** text căn giữa, font-size 14px
-- **THEN** KHÔNG hiển thị illustration, icon, hoặc empty state artwork
-- **THEN** KHÔNG hiển thị nhiều dòng text giải thích dài dòng
+## ADDED Requirements
 
 ### Requirement: Section Tasks Đã Hoàn Thành
 Hệ thống MUST hiển thị tasks đã hoàn thành trong một section riêng biệt, có thể collapse/expand.
@@ -141,4 +81,3 @@ Hệ thống MUST lưu trạng thái collapse/expand của completed section qua
 - **THEN** đọc trạng thái từ LocalStorage
 - **THEN** render completed section theo trạng thái đã lưu
 - **THEN** nếu không có state trong storage, mặc định collapsed
-

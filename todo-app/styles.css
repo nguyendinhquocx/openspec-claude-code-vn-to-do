@@ -78,13 +78,11 @@ h1 {
 
 /* ===== Form ===== */
 .task-form {
-    display: flex;
-    gap: var(--space-1);
     margin-bottom: var(--space-4);
 }
 
 #taskInput {
-    flex: 1;
+    width: 100%;
     padding: var(--space-2);
     font-family: var(--font-family);
     font-size: var(--font-size-base);
@@ -92,36 +90,15 @@ h1 {
     background-color: var(--color-gray-light);
     border-radius: 4px;
     outline: none;
-    transition: box-shadow 0.15s ease;
+    transition: background-color 0.15s ease;
 }
 
 #taskInput:focus {
-    box-shadow: 0 0 0 2px var(--color-black);
+    background-color: #F0F0F0;
 }
 
 #taskInput::placeholder {
     color: var(--color-gray);
-}
-
-.task-form button {
-    padding: var(--space-2) var(--space-3);
-    font-family: var(--font-family);
-    font-size: var(--font-size-base);
-    font-weight: 500;
-    color: var(--color-black);
-    background-color: var(--color-white);
-    border: 1px solid var(--color-black);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-.task-form button:hover {
-    background-color: var(--color-gray-light);
-}
-
-.task-form button:active {
-    transform: scale(0.98);
 }
 
 /* ===== Task List ===== */
@@ -270,4 +247,54 @@ h1 {
 *:focus-visible {
     outline: 2px solid var(--color-black);
     outline-offset: 2px;
+}
+
+/* ===== Completed Section ===== */
+.completed-section {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-gray-light);
+}
+
+.completed-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-size: var(--font-size-small);
+    color: var(--color-gray);
+    transition: color 0.15s ease;
+}
+
+.completed-header:hover {
+    color: var(--color-black);
+}
+
+.collapse-icon {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.completed-header.expanded .collapse-icon {
+    transform: rotate(90deg);
+}
+
+.completed-list {
+    margin-top: var(--space-2);
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.completed-list .task-item {
+    opacity: 0.6;
+}
+
+.completed-list .task-item:hover {
+    opacity: 0.8;
 }

@@ -10,7 +10,10 @@
       "Bash(if [ -d \"add-todo-app\" ])",
       "Bash(then cp -r add-todo-app \"archive/2025-10-24-add-todo-app\")",
       "Bash(else echo \"Source not found\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(python -m http.server:*)",
+      "Bash(if [ -d \"improve-ui-minimal\" ])",
+      "Bash(then cp -r improve-ui-minimal \"archive/2025-10-24-improve-ui-minimal\")"
     ],
     "deny": [],
     "ask": []

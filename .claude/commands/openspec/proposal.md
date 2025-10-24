@@ -5,24 +5,23 @@ category: OpenSpec
 tags: [openspec, change]
 ---
 <!-- OPENSPEC:START -->
-**Nguyên tắc bảo vệ**
-- **BẮT BUỘC**: Tất cả nội dung trong `proposal.md`, `tasks.md`, `design.md`, và `spec.md` PHẢI viết bằng TIẾNG VIỆT (trừ headers cấu trúc và lệnh). Xem chi tiết tại `openspec/AGENTS.md`.
-- Ưu tiên cách làm đơn giản, tối thiểu trước, chỉ thêm độ phức tạp khi được yêu cầu hoặc thực sự cần thiết.
-- Giữ phạm vi thay đổi chặt chẽ theo kết quả được yêu cầu.
-- Tham khảo `openspec/AGENTS.md` (nằm trong thư mục `openspec/`—chạy `ls openspec` hoặc `openspec update` nếu không thấy) nếu cần thêm quy ước hoặc làm rõ về OpenSpec.
-- Xác định bất kỳ chi tiết mơ hồ nào và hỏi thêm câu hỏi cần thiết trước khi chỉnh sửa file.
+**Guardrails**
+- Favor straightforward, minimal implementations first and add complexity only when it is requested or clearly required.
+- Keep changes tightly scoped to the requested outcome.
+- Refer to `openspec/AGENTS.md` (located inside the `openspec/` directory—run `ls openspec` or `openspec update` if you don't see it) if you need additional OpenSpec conventions or clarifications.
+- Identify any vague or ambiguous details and ask the necessary follow-up questions before editing files.
 
-**Các bước thực hiện**
-1. Xem lại `openspec/project.md`, chạy `openspec list` và `openspec list --specs`, kiểm tra code hoặc docs liên quan (ví dụ qua `rg`/`ls`) để làm căn cứ cho đề xuất dựa trên hành vi hiện tại; ghi chú bất kỳ khoảng trống nào cần làm rõ.
-2. Chọn một `change-id` duy nhất bắt đầu bằng động từ và tạo khung `proposal.md`, `tasks.md`, và `design.md` (khi cần) trong `openspec/changes/<id>/`.
-3. Ánh xạ thay đổi thành các capabilities hoặc requirements cụ thể, chia nhỏ các nỗ lực đa phạm vi thành các spec deltas riêng biệt với mối quan hệ và trình tự rõ ràng.
-4. Ghi lại lý do kiến trúc trong `design.md` khi giải pháp trải rộng nhiều hệ thống, giới thiệu pattern mới, hoặc yêu cầu thảo luận đánh đổi trước khi commit vào specs.
-5. Soạn thảo spec deltas trong `changes/<id>/specs/<capability>/spec.md` (một thư mục cho mỗi capability) sử dụng `## ADDED|MODIFIED|REMOVED Requirements` với ít nhất một `#### Scenario:` cho mỗi requirement và tham chiếu chéo các capabilities liên quan khi cần.
-6. Soạn thảo `tasks.md` như một danh sách có thứ tự các mục công việc nhỏ, có thể kiểm chứng, mang lại tiến độ người dùng nhìn thấy được, bao gồm validation (tests, tooling), và làm nổi bật các dependencies hoặc công việc có thể song song hóa.
-7. Validate với `openspec validate <id> --strict` và giải quyết mọi vấn đề trước khi chia sẻ đề xuất.
+**Steps**
+1. Review `openspec/project.md`, run `openspec list` and `openspec list --specs`, and inspect related code or docs (e.g., via `rg`/`ls`) to ground the proposal in current behaviour; note any gaps that require clarification.
+2. Choose a unique verb-led `change-id` and scaffold `proposal.md`, `tasks.md`, and `design.md` (when needed) under `openspec/changes/<id>/`.
+3. Map the change into concrete capabilities or requirements, breaking multi-scope efforts into distinct spec deltas with clear relationships and sequencing.
+4. Capture architectural reasoning in `design.md` when the solution spans multiple systems, introduces new patterns, or demands trade-off discussion before committing to specs.
+5. Draft spec deltas in `changes/<id>/specs/<capability>/spec.md` (one folder per capability) using `## ADDED|MODIFIED|REMOVED Requirements` with at least one `#### Scenario:` per requirement and cross-reference related capabilities when relevant.
+6. Draft `tasks.md` as an ordered list of small, verifiable work items that deliver user-visible progress, include validation (tests, tooling), and highlight dependencies or parallelizable work.
+7. Validate with `openspec validate <id> --strict` and resolve every issue before sharing the proposal.
 
-**Tham khảo**
-- Dùng `openspec show <id> --json --deltas-only` hoặc `openspec show <spec> --type spec` để kiểm tra chi tiết khi validation thất bại.
-- Tìm kiếm các requirements hiện có với `rg -n "Requirement:|Scenario:" openspec/specs` trước khi viết mới.
-- Khám phá codebase với `rg <keyword>`, `ls`, hoặc đọc file trực tiếp để đề xuất phù hợp với thực tế triển khai hiện tại.
+**Reference**
+- Use `openspec show <id> --json --deltas-only` or `openspec show <spec> --type spec` to inspect details when validation fails.
+- Search existing requirements with `rg -n "Requirement:|Scenario:" openspec/specs` before writing new ones.
+- Explore the codebase with `rg <keyword>`, `ls`, or direct file reads so proposals align with current implementation realities.
 <!-- OPENSPEC:END -->

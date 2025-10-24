@@ -5,20 +5,19 @@ category: OpenSpec
 tags: [openspec, apply]
 ---
 <!-- OPENSPEC:START -->
-**Nguyên tắc bảo vệ**
-- **BẮT BUỘC**: Tất cả code comments, ghi chú, và nội dung tài liệu PHẢI viết bằng TIẾNG VIỆT. Xem chi tiết tại `openspec/AGENTS.md`.
-- Ưu tiên cách làm đơn giản, tối thiểu trước, chỉ thêm độ phức tạp khi được yêu cầu hoặc thực sự cần thiết.
-- Giữ phạm vi thay đổi chặt chẽ theo kết quả được yêu cầu.
-- Tham khảo `openspec/AGENTS.md` (nằm trong thư mục `openspec/`—chạy `ls openspec` hoặc `openspec update` nếu không thấy) nếu cần thêm quy ước hoặc làm rõ về OpenSpec.
+**Guardrails**
+- Favor straightforward, minimal implementations first and add complexity only when it is requested or clearly required.
+- Keep changes tightly scoped to the requested outcome.
+- Refer to `openspec/AGENTS.md` (located inside the `openspec/` directory—run `ls openspec` or `openspec update` if you don't see it) if you need additional OpenSpec conventions or clarifications.
 
-**Các bước thực hiện**
-Theo dõi các bước này như TODOs và hoàn thành từng cái một.
-1. Đọc `changes/<id>/proposal.md`, `design.md` (nếu có), và `tasks.md` để xác nhận phạm vi và tiêu chí chấp nhận.
-2. Làm việc qua các tasks theo thứ tự, giữ các chỉnh sửa tối thiểu và tập trung vào thay đổi được yêu cầu.
-3. Xác nhận hoàn thành trước khi cập nhật trạng thái—đảm bảo mọi mục trong `tasks.md` đã hoàn thành.
-4. Cập nhật checklist sau khi tất cả công việc đã xong để mỗi task được đánh dấu `- [x]` và phản ánh thực tế.
-5. Tham chiếu `openspec list` hoặc `openspec show <item>` khi cần thêm ngữ cảnh.
+**Steps**
+Track these steps as TODOs and complete them one by one.
+1. Read `changes/<id>/proposal.md`, `design.md` (if present), and `tasks.md` to confirm scope and acceptance criteria.
+2. Work through tasks sequentially, keeping edits minimal and focused on the requested change.
+3. Confirm completion before updating statuses—make sure every item in `tasks.md` is finished.
+4. Update the checklist after all work is done so each task is marked `- [x]` and reflects reality.
+5. Reference `openspec list` or `openspec show <item>` when additional context is required.
 
-**Tham khảo**
-- Dùng `openspec show <id> --json --deltas-only` nếu cần thêm ngữ cảnh từ đề xuất trong khi triển khai.
+**Reference**
+- Use `openspec show <id> --json --deltas-only` if you need additional context from the proposal while implementing.
 <!-- OPENSPEC:END -->

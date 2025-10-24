@@ -1,142 +1,110 @@
-# Hướng dẫn OpenSpec
+# OpenSpec Instructions
 
-Hướng dẫn cho AI coding assistants sử dụng OpenSpec để phát triển theo specs.
+Instructions for AI coding assistants using OpenSpec for spec-driven development.
 
-## QUAN TRỌNG: Ngôn ngữ Sử dụng
+## TL;DR Quick Checklist
 
-**BẮT BUỘC PHẢI DÙNG TIẾNG VIỆT** cho TẤT CẢ nội dung trong các file:
-- `proposal.md` - Toàn bộ nội dung bằng tiếng Việt
-- `tasks.md` - Toàn bộ nội dung bằng tiếng Việt
-- `design.md` - Toàn bộ nội dung bằng tiếng Việt
-- `spec.md` - Toàn bộ nội dung bằng tiếng Việt (trừ headers cấu trúc như `## ADDED Requirements`, `#### Scenario:`)
-- Ghi chú code - Tiếng Việt
-- Comments - Tiếng Việt
+- Search existing work: `openspec spec list --long`, `openspec list` (use `rg` only for full-text search)
+- Decide scope: new capability vs modify existing capability
+- Pick a unique `change-id`: kebab-case, verb-led (`add-`, `update-`, `remove-`, `refactor-`)
+- Scaffold: `proposal.md`, `tasks.md`, `design.md` (only if needed), and delta specs per affected capability
+- Write deltas: use `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; include at least one `#### Scenario:` per requirement
+- Validate: `openspec validate [change-id] --strict` and fix issues
+- Request approval: Do not start implementation until proposal is approved
 
-**Ngoại lệ** (giữ nguyên tiếng Anh):
-- Headers cấu trúc: `## ADDED Requirements`, `## MODIFIED Requirements`, `## REMOVED Requirements`, `## RENAMED Requirements`
-- Scenario headers: `#### Scenario:`
-- Từ khóa kỹ thuật: `WHEN`, `THEN` (HOẶC CÁC TỪ KHÁC MÀY NHẬN THẤY QUAN TRỌNG)
-- Tên biến, functions, class names trong code
-- Command line instructions và paths
+## Three-Stage Workflow
 
-**Ví dụ đúng:**
-```markdown
-## ADDED Requirements
-### Requirement: Xác thực Người dùng
-Hệ thống PHẢI xác thực người dùng trước khi cho phép truy cập.
+### Stage 1: Creating Changes
+Create proposal when you need to:
+- Add features or functionality
+- Make breaking changes (API, schema)
+- Change architecture or patterns  
+- Optimize performance (changes behavior)
+- Update security patterns
 
-#### Scenario: Đăng nhập thành công
-- **WHEN** người dùng nhập đúng tên đăng nhập và mật khẩu
-- **THEN** hệ thống cấp quyền truy cập và tạo session token
-```
+Triggers (examples):
+- "Help me create a change proposal"
+- "Help me plan a change"
+- "Help me create a proposal"
+- "I want to create a spec proposal"
+- "I want to create a spec"
 
-## TL;DR Checklist nhanh
+Loose matching guidance:
+- Contains one of: `proposal`, `change`, `spec`
+- With one of: `create`, `plan`, `make`, `start`, `help`
 
-- Tìm kiếm công việc hiện có: `openspec spec list --long`, `openspec list` (chỉ dùng `rg` cho tìm kiếm full-text)
-- Quyết định phạm vi: capability mới vs sửa capability hiện có
-- Chọn một `change-id` duy nhất: kebab-case, bắt đầu bằng động từ (`add-`, `update-`, `remove-`, `refactor-`)
-- Tạo khung: `proposal.md`, `tasks.md`, `design.md` (chỉ khi cần), và delta specs cho mỗi capability bị ảnh hưởng
-- Viết deltas: dùng `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; bao gồm ít nhất một `#### Scenario:` cho mỗi requirement
-- Validate: `openspec validate [change-id] --strict` và fix các vấn đề
-- Yêu cầu phê duyệt: Không bắt đầu triển khai cho đến khi proposal được phê duyệt
-
-## Quy trình 3 giai đoạn
-
-### Giai đoạn 1: Tạo Changes
-
-Tạo proposal khi mày cần:
-- Thêm features hoặc functionality
-- Thực hiện breaking changes (API, schema)
-- Thay đổi architecture hoặc patterns
-- Tối ưu performance (thay đổi behavior)
-- Cập nhật security patterns
-
-Triggers (ví dụ):
-- "Giúp tao tạo change proposal"
-- "Giúp tao lên kế hoạch thay đổi"
-- "Giúp tao tạo proposal"
-- "Tao muốn tạo spec proposal"
-- "Tao muốn tạo spec"
-
-Hướng dẫn khớp lỏng:
-- Chứa một trong: `proposal`, `change`, `spec`
-- Với một trong: `tạo`, `lên kế hoạch`, `làm`, `bắt đầu`, `giúp`
-
-Bỏ qua proposal cho:
-- Bug fixes (khôi phục behavior dự định)
+Skip proposal for:
+- Bug fixes (restore intended behavior)
 - Typos, formatting, comments
-- Dependency updates (không breaking)
-- Thay đổi configuration
-- Tests cho behavior hiện có
+- Dependency updates (non-breaking)
+- Configuration changes
+- Tests for existing behavior
 
-**Quy trình làm việc**
-1. Xem lại `openspec/project.md`, `openspec list`, và `openspec list --specs` để hiểu ngữ cảnh hiện tại.
-2. Chọn một `change-id` duy nhất bắt đầu bằng động từ và tạo khung `proposal.md`, `tasks.md`, `design.md` tùy chọn, và spec deltas trong `openspec/changes/<id>/`.
-3. Soạn thảo spec deltas sử dụng `## ADDED|MODIFIED|REMOVED Requirements` với ít nhất một `#### Scenario:` cho mỗi requirement.
-4. Chạy `openspec validate <id> --strict` và giải quyết mọi vấn đề trước khi chia sẻ proposal.
+**Workflow**
+1. Review `openspec/project.md`, `openspec list`, and `openspec list --specs` to understand current context.
+2. Choose a unique verb-led `change-id` and scaffold `proposal.md`, `tasks.md`, optional `design.md`, and spec deltas under `openspec/changes/<id>/`.
+3. Draft spec deltas using `## ADDED|MODIFIED|REMOVED Requirements` with at least one `#### Scenario:` per requirement.
+4. Run `openspec validate <id> --strict` and resolve any issues before sharing the proposal.
 
-### Giai đoạn 2: Triển khai Changes
+### Stage 2: Implementing Changes
+Track these steps as TODOs and complete them one by one.
+1. **Read proposal.md** - Understand what's being built
+2. **Read design.md** (if exists) - Review technical decisions
+3. **Read tasks.md** - Get implementation checklist
+4. **Implement tasks sequentially** - Complete in order
+5. **Confirm completion** - Ensure every item in `tasks.md` is finished before updating statuses
+6. **Update checklist** - After all work is done, set every task to `- [x]` so the list reflects reality
+7. **Approval gate** - Do not start implementation until the proposal is reviewed and approved
 
-Theo dõi các bước này như TODOs và hoàn thành từng cái một.
-1. **Đọc proposal.md** - Hiểu cái gì đang được build
-2. **Đọc design.md** (nếu tồn tại) - Xem lại các quyết định kỹ thuật
-3. **Đọc tasks.md** - Lấy checklist triển khai
-4. **Triển khai tasks theo thứ tự** - Hoàn thành theo đúng thứ tự
-5. **Xác nhận hoàn thành** - Đảm bảo mọi mục trong `tasks.md` đã hoàn thành trước khi cập nhật trạng thái
-6. **Cập nhật checklist** - Sau khi tất cả công việc hoàn tất, đặt mọi task thành `- [x]` để danh sách phản ánh thực tế
-7. **Cổng phê duyệt** - Không bắt đầu triển khai cho đến khi proposal được review và phê duyệt
+### Stage 3: Archiving Changes
+After deployment, create separate PR to:
+- Move `changes/[name]/` → `changes/archive/YYYY-MM-DD-[name]/`
+- Update `specs/` if capabilities changed
+- Use `openspec archive <change-id> --skip-specs --yes` for tooling-only changes (always pass the change ID explicitly)
+- Run `openspec validate --strict` to confirm the archived change passes checks
 
-### Giai đoạn 3: Lưu trữ Changes
+## Before Any Task
 
-Sau khi deploy, tạo PR riêng để:
-- Di chuyển `changes/[name]/` → `changes/archive/YYYY-MM-DD-[name]/`
-- Cập nhật `specs/` nếu capabilities thay đổi
-- Dùng `openspec archive <change-id> --skip-specs --yes` cho changes chỉ liên quan tooling (luôn truyền change ID một cách rõ ràng)
-- Chạy `openspec validate --strict` để xác nhận change đã lưu trữ pass checks
+**Context Checklist:**
+- [ ] Read relevant specs in `specs/[capability]/spec.md`
+- [ ] Check pending changes in `changes/` for conflicts
+- [ ] Read `openspec/project.md` for conventions
+- [ ] Run `openspec list` to see active changes
+- [ ] Run `openspec list --specs` to see existing capabilities
 
-## Trước mọi Task
+**Before Creating Specs:**
+- Always check if capability already exists
+- Prefer modifying existing specs over creating duplicates
+- Use `openspec show [spec]` to review current state
+- If request is ambiguous, ask 1–2 clarifying questions before scaffolding
 
-**Checklist Ngữ cảnh:**
-- [ ] Đọc specs liên quan trong `specs/[capability]/spec.md`
-- [ ] Kiểm tra pending changes trong `changes/` để tránh xung đột
-- [ ] Đọc `openspec/project.md` cho các quy ước
-- [ ] Chạy `openspec list` để xem các changes đang hoạt động
-- [ ] Chạy `openspec list --specs` để xem các capabilities hiện có
-
-**Trước khi Tạo Specs:**
-- Luôn kiểm tra xem capability đã tồn tại chưa
-- Ưu tiên sửa specs hiện có hơn tạo bản sao
-- Dùng `openspec show [spec]` để xem lại trạng thái hiện tại
-- Nếu yêu cầu mơ hồ, hỏi 1–2 câu làm rõ trước khi tạo khung
-
-### Hướng dẫn Tìm kiếm
-
-- Liệt kê specs: `openspec spec list --long` (hoặc `--json` cho scripts)
-- Liệt kê changes: `openspec list` (hoặc `openspec change list --json` - deprecated nhưng vẫn có)
-- Hiển thị chi tiết:
-  - Spec: `openspec show <spec-id> --type spec` (dùng `--json` cho filters)
+### Search Guidance
+- Enumerate specs: `openspec spec list --long` (or `--json` for scripts)
+- Enumerate changes: `openspec list` (or `openspec change list --json` - deprecated but available)
+- Show details:
+  - Spec: `openspec show <spec-id> --type spec` (use `--json` for filters)
   - Change: `openspec show <change-id> --json --deltas-only`
-- Tìm kiếm full-text (dùng ripgrep): `rg -n "Requirement:|Scenario:" openspec/specs`
+- Full-text search (use ripgrep): `rg -n "Requirement:|Scenario:" openspec/specs`
 
-## Bắt đầu Nhanh
+## Quick Start
 
-### Lệnh CLI
+### CLI Commands
 
 ```bash
-# Lệnh thiết yếu
-openspec list                  # Liệt kê các changes đang hoạt động
-openspec list --specs          # Liệt kê specifications
-openspec show [item]           # Hiển thị change hoặc spec
-openspec validate [item]       # Validate changes hoặc specs
-openspec archive <change-id> [--yes|-y]   # Lưu trữ sau khi deploy (thêm --yes cho chạy không tương tác)
+# Essential commands
+openspec list                  # List active changes
+openspec list --specs          # List specifications
+openspec show [item]           # Display change or spec
+openspec validate [item]       # Validate changes or specs
+openspec archive <change-id> [--yes|-y]   # Archive after deployment (add --yes for non-interactive runs)
 
-# Quản lý project
-openspec init [path]           # Khởi tạo OpenSpec
-openspec update [path]         # Cập nhật instruction files
+# Project management
+openspec init [path]           # Initialize OpenSpec
+openspec update [path]         # Update instruction files
 
-# Chế độ tương tác
-openspec show                  # Nhắc để chọn
-openspec validate              # Chế độ bulk validation
+# Interactive mode
+openspec show                  # Prompts for selection
+openspec validate              # Bulk validation mode
 
 # Debugging
 openspec show [change] --json --deltas-only
@@ -145,241 +113,238 @@ openspec validate [change] --strict
 
 ### Command Flags
 
-- `--json` - Output có thể đọc bằng máy
-- `--type change|spec` - Phân biệt các items
-- `--strict` - Validation toàn diện
-- `--no-interactive` - Tắt prompts
-- `--skip-specs` - Lưu trữ mà không cập nhật spec
-- `--yes`/`-y` - Bỏ qua confirmation prompts (lưu trữ không tương tác)
+- `--json` - Machine-readable output
+- `--type change|spec` - Disambiguate items
+- `--strict` - Comprehensive validation
+- `--no-interactive` - Disable prompts
+- `--skip-specs` - Archive without spec updates
+- `--yes`/`-y` - Skip confirmation prompts (non-interactive archive)
 
-## Cấu trúc Thư mục
+## Directory Structure
 
 ```
 openspec/
-├── project.md              # Quy ước project
-├── specs/                  # Sự thật hiện tại - cái gì ĐÃ được build
+├── project.md              # Project conventions
+├── specs/                  # Current truth - what IS built
 │   └── [capability]/       # Single focused capability
-│       ├── spec.md         # Requirements và scenarios
+│       ├── spec.md         # Requirements and scenarios
 │       └── design.md       # Technical patterns
-├── changes/                # Proposals - cái gì NÊN thay đổi
+├── changes/                # Proposals - what SHOULD change
 │   ├── [change-name]/
-│   │   ├── proposal.md     # Tại sao, cái gì, impact
-│   │   ├── tasks.md        # Checklist triển khai
-│   │   ├── design.md       # Quyết định kỹ thuật (tùy chọn; xem tiêu chí)
+│   │   ├── proposal.md     # Why, what, impact
+│   │   ├── tasks.md        # Implementation checklist
+│   │   ├── design.md       # Technical decisions (optional; see criteria)
 │   │   └── specs/          # Delta changes
 │   │       └── [capability]/
 │   │           └── spec.md # ADDED/MODIFIED/REMOVED
 │   └── archive/            # Completed changes
 ```
 
-## Tạo Change Proposals
+## Creating Change Proposals
 
 ### Decision Tree
 
 ```
-Yêu cầu mới?
-├─ Bug fix khôi phục spec behavior? → Fix trực tiếp
-├─ Typo/format/comment? → Fix trực tiếp
-├─ New feature/capability? → Tạo proposal
-├─ Breaking change? → Tạo proposal
-├─ Architecture change? → Tạo proposal
-└─ Không rõ? → Tạo proposal (an toàn hơn)
+New request?
+├─ Bug fix restoring spec behavior? → Fix directly
+├─ Typo/format/comment? → Fix directly  
+├─ New feature/capability? → Create proposal
+├─ Breaking change? → Create proposal
+├─ Architecture change? → Create proposal
+└─ Unclear? → Create proposal (safer)
 ```
 
-### Cấu trúc Proposal
+### Proposal Structure
 
-1. **Tạo thư mục:** `changes/[change-id]/` (kebab-case, bắt đầu bằng động từ, duy nhất)
+1. **Create directory:** `changes/[change-id]/` (kebab-case, verb-led, unique)
 
-2. **Viết proposal.md:**
+2. **Write proposal.md:**
 ```markdown
-## Tại sao
-[1-2 câu về vấn đề/cơ hội bằng tiếng Việt]
+## Why
+[1-2 sentences on problem/opportunity]
 
-## Cái gì Thay đổi
-- [Danh sách bullet các thay đổi bằng tiếng Việt]
-- [Đánh dấu breaking changes với **BREAKING**]
+## What Changes
+- [Bullet list of changes]
+- [Mark breaking changes with **BREAKING**]
 
 ## Impact
-- Specs bị ảnh hưởng: [liệt kê capabilities bằng tiếng Việt]
-- Code bị ảnh hưởng: [key files/systems]
+- Affected specs: [list capabilities]
+- Affected code: [key files/systems]
 ```
 
-3. **Tạo spec deltas:** `specs/[capability]/spec.md`
+3. **Create spec deltas:** `specs/[capability]/spec.md`
 ```markdown
 ## ADDED Requirements
-### Requirement: Tên Feature bằng tiếng Việt
-Hệ thống PHẢI cung cấp... [mô tả bằng tiếng Việt]
+### Requirement: New Feature
+The system SHALL provide...
 
-#### Scenario: Trường hợp thành công
-- **WHEN** người dùng thực hiện hành động [mô tả bằng tiếng Việt]
-- **THEN** kết quả mong đợi [mô tả bằng tiếng Việt]
+#### Scenario: Success case
+- **WHEN** user performs action
+- **THEN** expected result
 
 ## MODIFIED Requirements
-### Requirement: Tên Feature Hiện có
-[Toàn bộ requirement đã sửa bằng tiếng Việt]
+### Requirement: Existing Feature
+[Complete modified requirement]
 
 ## REMOVED Requirements
-### Requirement: Tên Feature Cũ
-**Lý do**: [Tại sao xóa - tiếng Việt]
-**Migration**: [Cách xử lý - tiếng Việt]
+### Requirement: Old Feature
+**Reason**: [Why removing]
+**Migration**: [How to handle]
 ```
-Nếu nhiều capabilities bị ảnh hưởng, tạo nhiều delta files trong `changes/[change-id]/specs/<capability>/spec.md`—một cho mỗi capability.
+If multiple capabilities are affected, create multiple delta files under `changes/[change-id]/specs/<capability>/spec.md`—one per capability.
 
-4. **Tạo tasks.md:**
+4. **Create tasks.md:**
 ```markdown
-## 1. Triển khai
-- [ ] 1.1 Tạo database schema
-- [ ] 1.2 Triển khai API endpoint
-- [ ] 1.3 Thêm frontend component
-- [ ] 1.4 Viết tests
+## 1. Implementation
+- [ ] 1.1 Create database schema
+- [ ] 1.2 Implement API endpoint
+- [ ] 1.3 Add frontend component
+- [ ] 1.4 Write tests
 ```
-**Lưu ý**: Tất cả mô tả tasks PHẢI bằng tiếng Việt.
 
-5. **Tạo design.md khi cần:**
-Tạo `design.md` nếu bất kỳ điều nào sau đây áp dụng; nếu không thì bỏ qua:
-- Thay đổi cắt ngang (nhiều services/modules) hoặc một architectural pattern mới
-- External dependency mới hoặc thay đổi data model đáng kể
-- Độ phức tạp về security, performance, hoặc migration
-- Sự mơ hồ có lợi từ quyết định kỹ thuật trước khi coding
+5. **Create design.md when needed:**
+Create `design.md` if any of the following apply; otherwise omit it:
+- Cross-cutting change (multiple services/modules) or a new architectural pattern
+- New external dependency or significant data model changes
+- Security, performance, or migration complexity
+- Ambiguity that benefits from technical decisions before coding
 
-Khung `design.md` tối thiểu:
+Minimal `design.md` skeleton:
 ```markdown
-## Ngữ cảnh
+## Context
 [Background, constraints, stakeholders]
 
-## Mục tiêu / Không phải Mục tiêu
-- Mục tiêu: [...]
-- Không phải Mục tiêu: [...]
+## Goals / Non-Goals
+- Goals: [...]
+- Non-Goals: [...]
 
-## Quyết định
-- Quyết định: [Cái gì và tại sao]
-- Các lựa chọn đã xem xét: [Options + lý do]
+## Decisions
+- Decision: [What and why]
+- Alternatives considered: [Options + rationale]
 
-## Rủi ro / Đánh đổi
-- [Rủi ro] → Giảm thiểu
+## Risks / Trade-offs
+- [Risk] → Mitigation
 
-## Kế hoạch Migration
-[Các bước, rollback]
+## Migration Plan
+[Steps, rollback]
 
-## Câu hỏi Mở
+## Open Questions
 - [...]
 ```
 
-## Format File Spec
+## Spec File Format
 
-### Quan trọng: Format Scenario
+### Critical: Scenario Formatting
 
-**ĐÚNG** (dùng #### headers):
+**CORRECT** (use #### headers):
 ```markdown
-#### Scenario: Đăng nhập người dùng thành công
-- **WHEN** cung cấp credentials hợp lệ
-- **THEN** trả về JWT token
+#### Scenario: User login success
+- **WHEN** valid credentials provided
+- **THEN** return JWT token
 ```
 
-**SAI** (đừng dùng bullets hoặc bold):
+**WRONG** (don't use bullets or bold):
 ```markdown
-- **Scenario: Đăng nhập người dùng**  ❌
-**Scenario**: Đăng nhập người dùng     ❌
-### Scenario: Đăng nhập người dùng      ❌
+- **Scenario: User login**  ❌
+**Scenario**: User login     ❌
+### Scenario: User login      ❌
 ```
 
-Mọi requirement PHẢI có ít nhất một scenario.
+Every requirement MUST have at least one scenario.
 
-### Cách viết Requirement
-
-- Dùng PHẢI/BẮT BUỘC cho normative requirements (tránh nên/có thể trừ khi có chủ đích không normative)
+### Requirement Wording
+- Use SHALL/MUST for normative requirements (avoid should/may unless intentionally non-normative)
 
 ### Delta Operations
 
-- `## ADDED Requirements` - Capabilities mới
-- `## MODIFIED Requirements` - Behavior đã thay đổi
-- `## REMOVED Requirements` - Features deprecated
-- `## RENAMED Requirements` - Thay đổi tên
+- `## ADDED Requirements` - New capabilities
+- `## MODIFIED Requirements` - Changed behavior
+- `## REMOVED Requirements` - Deprecated features
+- `## RENAMED Requirements` - Name changes
 
-Headers khớp với `trim(header)` - khoảng trắng bị bỏ qua.
+Headers matched with `trim(header)` - whitespace ignored.
 
-#### Khi nào dùng ADDED vs MODIFIED
+#### When to use ADDED vs MODIFIED
+- ADDED: Introduces a new capability or sub-capability that can stand alone as a requirement. Prefer ADDED when the change is orthogonal (e.g., adding "Slash Command Configuration") rather than altering the semantics of an existing requirement.
+- MODIFIED: Changes the behavior, scope, or acceptance criteria of an existing requirement. Always paste the full, updated requirement content (header + all scenarios). The archiver will replace the entire requirement with what you provide here; partial deltas will drop previous details.
+- RENAMED: Use when only the name changes. If you also change behavior, use RENAMED (name) plus MODIFIED (content) referencing the new name.
 
-- ADDED: Giới thiệu một capability hoặc sub-capability mới có thể đứng độc lập như một requirement. Ưu tiên ADDED khi thay đổi là trực giao (ví dụ, thêm "Cấu hình Slash Command") thay vì thay đổi ngữ nghĩa của requirement hiện có.
-- MODIFIED: Thay đổi behavior, scope, hoặc tiêu chí chấp nhận của requirement hiện có. Luôn paste toàn bộ nội dung requirement đã cập nhật (header + tất cả scenarios). Archiver sẽ thay thế toàn bộ requirement bằng cái mày cung cấp ở đây; partial deltas sẽ làm mất các chi tiết trước đó.
-- RENAMED: Dùng khi chỉ tên thay đổi. Nếu mày cũng thay đổi behavior, dùng RENAMED (tên) cộng MODIFIED (nội dung) tham chiếu tên mới.
+Common pitfall: Using MODIFIED to add a new concern without including the previous text. This causes loss of detail at archive time. If you aren’t explicitly changing the existing requirement, add a new requirement under ADDED instead.
 
-Sai lầm thường gặp: Dùng MODIFIED để thêm một concern mới mà không bao gồm text trước đó. Điều này gây mất chi tiết tại thời điểm archive. Nếu mày không thực sự thay đổi requirement hiện có, thêm requirement mới trong ADDED thay vào đó.
+Authoring a MODIFIED requirement correctly:
+1) Locate the existing requirement in `openspec/specs/<capability>/spec.md`.
+2) Copy the entire requirement block (from `### Requirement: ...` through its scenarios).
+3) Paste it under `## MODIFIED Requirements` and edit to reflect the new behavior.
+4) Ensure the header text matches exactly (whitespace-insensitive) and keep at least one `#### Scenario:`.
 
-Viết requirement MODIFIED đúng cách:
-1) Xác định requirement hiện có trong `openspec/specs/<capability>/spec.md`.
-2) Copy toàn bộ requirement block (từ `### Requirement: ...` qua các scenarios của nó).
-3) Paste nó trong `## MODIFIED Requirements` và edit để phản ánh behavior mới.
-4) Đảm bảo header text khớp chính xác (không phân biệt khoảng trắng) và giữ ít nhất một `#### Scenario:`.
-
-Ví dụ cho RENAMED:
+Example for RENAMED:
 ```markdown
 ## RENAMED Requirements
-- FROM: `### Requirement: Đăng nhập`
-- TO: `### Requirement: Xác thực Người dùng`
+- FROM: `### Requirement: Login`
+- TO: `### Requirement: User Authentication`
 ```
 
-## Khắc phục Sự cố
+## Troubleshooting
 
-### Lỗi Thường gặp
+### Common Errors
 
 **"Change must have at least one delta"**
-- Kiểm tra `changes/[name]/specs/` tồn tại với .md files
-- Xác minh files có operation prefixes (## ADDED Requirements)
+- Check `changes/[name]/specs/` exists with .md files
+- Verify files have operation prefixes (## ADDED Requirements)
 
 **"Requirement must have at least one scenario"**
-- Kiểm tra scenarios dùng format `#### Scenario:` (4 dấu thăng)
-- Đừng dùng bullet points hoặc bold cho scenario headers
+- Check scenarios use `#### Scenario:` format (4 hashtags)
+- Don't use bullet points or bold for scenario headers
 
 **Silent scenario parsing failures**
-- Format chính xác yêu cầu: `#### Scenario: Tên`
-- Debug với: `openspec show [change] --json --deltas-only`
+- Exact format required: `#### Scenario: Name`
+- Debug with: `openspec show [change] --json --deltas-only`
 
-### Mẹo Validation
+### Validation Tips
 
 ```bash
-# Luôn dùng strict mode cho comprehensive checks
+# Always use strict mode for comprehensive checks
 openspec validate [change] --strict
 
 # Debug delta parsing
 openspec show [change] --json | jq '.deltas'
 
-# Kiểm tra requirement cụ thể
+# Check specific requirement
 openspec show [spec] --json -r 1
 ```
 
 ## Happy Path Script
 
 ```bash
-# 1) Khám phá trạng thái hiện tại
+# 1) Explore current state
 openspec spec list --long
 openspec list
-# Tìm kiếm full-text tùy chọn:
+# Optional full-text search:
 # rg -n "Requirement:|Scenario:" openspec/specs
 # rg -n "^#|Requirement:" openspec/changes
 
-# 2) Chọn change id và tạo khung
+# 2) Choose change id and scaffold
 CHANGE=add-two-factor-auth
 mkdir -p openspec/changes/$CHANGE/{specs/auth}
-printf "## Tại sao\n...\n\n## Cái gì Thay đổi\n- ...\n\n## Impact\n- ...\n" > openspec/changes/$CHANGE/proposal.md
-printf "## 1. Triển khai\n- [ ] 1.1 ...\n" > openspec/changes/$CHANGE/tasks.md
+printf "## Why\n...\n\n## What Changes\n- ...\n\n## Impact\n- ...\n" > openspec/changes/$CHANGE/proposal.md
+printf "## 1. Implementation\n- [ ] 1.1 ...\n" > openspec/changes/$CHANGE/tasks.md
 
-# 3) Thêm deltas (ví dụ)
+# 3) Add deltas (example)
 cat > openspec/changes/$CHANGE/specs/auth/spec.md << 'EOF'
 ## ADDED Requirements
-### Requirement: Xác thực Hai yếu tố
-Người dùng PHẢI cung cấp yếu tố thứ hai khi đăng nhập.
+### Requirement: Two-Factor Authentication
+Users MUST provide a second factor during login.
 
-#### Scenario: OTP bắt buộc
-- **WHEN** credentials hợp lệ được cung cấp
-- **THEN** một OTP challenge được yêu cầu
+#### Scenario: OTP required
+- **WHEN** valid credentials are provided
+- **THEN** an OTP challenge is required
 EOF
 
 # 4) Validate
 openspec validate $CHANGE --strict
 ```
 
-## Ví dụ Multi-Capability
+## Multi-Capability Example
 
 ```
 openspec/changes/add-2fa-notify/
@@ -387,7 +352,7 @@ openspec/changes/add-2fa-notify/
 ├── tasks.md
 └── specs/
     ├── auth/
-    │   └── spec.md   # ADDED: Xác thực Hai yếu tố
+    │   └── spec.md   # ADDED: Two-Factor Authentication
     └── notifications/
         └── spec.md   # ADDED: OTP email notification
 ```
@@ -395,7 +360,7 @@ openspec/changes/add-2fa-notify/
 auth/spec.md
 ```markdown
 ## ADDED Requirements
-### Requirement: Xác thực Hai yếu tố
+### Requirement: Two-Factor Authentication
 ...
 ```
 
@@ -408,93 +373,82 @@ notifications/spec.md
 
 ## Best Practices
 
-### Đơn giản Trước tiên
+### Simplicity First
+- Default to <100 lines of new code
+- Single-file implementations until proven insufficient
+- Avoid frameworks without clear justification
+- Choose boring, proven patterns
 
-- Mặc định <100 dòng code mới
-- Triển khai single-file cho đến khi chứng minh không đủ
-- Tránh frameworks mà không có lý do rõ ràng
-- Chọn patterns nhàm chán, đã chứng minh
+### Complexity Triggers
+Only add complexity with:
+- Performance data showing current solution too slow
+- Concrete scale requirements (>1000 users, >100MB data)
+- Multiple proven use cases requiring abstraction
 
-### Triggers Độ phức tạp
+### Clear References
+- Use `file.ts:42` format for code locations
+- Reference specs as `specs/auth/spec.md`
+- Link related changes and PRs
 
-Chỉ thêm độ phức tạp với:
-- Dữ liệu performance cho thấy giải pháp hiện tại quá chậm
-- Yêu cầu scale cụ thể (>1000 users, >100MB data)
-- Nhiều use cases đã chứng minh yêu cầu abstraction
+### Capability Naming
+- Use verb-noun: `user-auth`, `payment-capture`
+- Single purpose per capability
+- 10-minute understandability rule
+- Split if description needs "AND"
 
-### Tham chiếu Rõ ràng
+### Change ID Naming
+- Use kebab-case, short and descriptive: `add-two-factor-auth`
+- Prefer verb-led prefixes: `add-`, `update-`, `remove-`, `refactor-`
+- Ensure uniqueness; if taken, append `-2`, `-3`, etc.
 
-- Dùng format `file.ts:42` cho vị trí code
-- Tham chiếu specs như `specs/auth/spec.md`
-- Link các changes và PRs liên quan
+## Tool Selection Guide
 
-### Đặt tên Capability
+| Task | Tool | Why |
+|------|------|-----|
+| Find files by pattern | Glob | Fast pattern matching |
+| Search code content | Grep | Optimized regex search |
+| Read specific files | Read | Direct file access |
+| Explore unknown scope | Task | Multi-step investigation |
 
-- Dùng verb-noun: `user-auth`, `payment-capture`
-- Single purpose cho mỗi capability
-- Quy tắc hiểu trong 10 phút
-- Split nếu mô tả cần "VÀ"
+## Error Recovery
 
-### Đặt tên Change ID
-
-- Dùng kebab-case, ngắn và mô tả: `add-two-factor-auth`
-- Ưu tiên prefixes bắt đầu bằng động từ: `add-`, `update-`, `remove-`, `refactor-`
-- Đảm bảo tính duy nhất; nếu đã được lấy, thêm `-2`, `-3`, v.v.
-
-## Hướng dẫn Chọn Tool
-
-| Task | Tool | Tại sao |
-|------|------|---------|
-| Tìm files theo pattern | Glob | Fast pattern matching |
-| Tìm kiếm code content | Grep | Optimized regex search |
-| Đọc files cụ thể | Read | Direct file access |
-| Khám phá scope không biết | Task | Multi-step investigation |
-
-## Khôi phục Lỗi
-
-### Xung đột Changes
-
-1. Chạy `openspec list` để xem các changes đang hoạt động
-2. Kiểm tra specs chồng chéo
-3. Phối hợp với các change owners
-4. Xem xét kết hợp proposals
+### Change Conflicts
+1. Run `openspec list` to see active changes
+2. Check for overlapping specs
+3. Coordinate with change owners
+4. Consider combining proposals
 
 ### Validation Failures
+1. Run with `--strict` flag
+2. Check JSON output for details
+3. Verify spec file format
+4. Ensure scenarios properly formatted
 
-1. Chạy với `--strict` flag
-2. Kiểm tra JSON output cho chi tiết
-3. Xác minh spec file format
-4. Đảm bảo scenarios được format đúng
+### Missing Context
+1. Read project.md first
+2. Check related specs
+3. Review recent archives
+4. Ask for clarification
 
-### Thiếu Ngữ cảnh
+## Quick Reference
 
-1. Đọc project.md trước
-2. Kiểm tra specs liên quan
-3. Xem lại archives gần đây
-4. Hỏi để làm rõ
-
-## Tham khảo Nhanh
-
-### Chỉ báo Giai đoạn
-
-- `changes/` - Đề xuất, chưa được build
-- `specs/` - Đã build và deploy
+### Stage Indicators
+- `changes/` - Proposed, not yet built
+- `specs/` - Built and deployed
 - `archive/` - Completed changes
 
-### Mục đích Files
+### File Purposes
+- `proposal.md` - Why and what
+- `tasks.md` - Implementation steps
+- `design.md` - Technical decisions
+- `spec.md` - Requirements and behavior
 
-- `proposal.md` - Tại sao và cái gì
-- `tasks.md` - Các bước triển khai
-- `design.md` - Quyết định kỹ thuật
-- `spec.md` - Requirements và behavior
-
-### CLI Thiết yếu
-
+### CLI Essentials
 ```bash
-openspec list              # Cái gì đang trong tiến trình?
-openspec show [item]       # Xem chi tiết
-openspec validate --strict # Có đúng không?
-openspec archive <change-id> [--yes|-y]  # Đánh dấu hoàn thành (thêm --yes cho automation)
+openspec list              # What's in progress?
+openspec show [item]       # View details
+openspec validate --strict # Is it correct?
+openspec archive <change-id> [--yes|-y]  # Mark complete (add --yes for automation)
 ```
 
-Nhớ: Specs là sự thật. Changes là đề xuất. Giữ chúng đồng bộ.
+Remember: Specs are truth. Changes are proposals. Keep them in sync.

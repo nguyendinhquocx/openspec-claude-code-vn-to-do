@@ -14,7 +14,7 @@
             <h1>To-Do</h1>
         </header>
 
-        <!-- Form nhập task mới -->
+        <!-- Form nhập task mới - chỉ input, không button -->
         <form id="taskForm" class="task-form">
             <input
                 type="text"
@@ -23,17 +23,27 @@
                 autocomplete="off"
                 autofocus
             >
-            <button type="submit">Thêm</button>
         </form>
 
-        <!-- Danh sách tasks -->
+        <!-- Danh sách tasks pending -->
         <ul id="taskList" class="task-list">
-            <!-- Tasks sẽ được render vào đây -->
+            <!-- Tasks pending được render vào đây -->
         </ul>
 
-        <!-- Empty state - chỉ hiện khi không có tasks -->
+        <!-- Empty state - chỉ hiện khi không có tasks pending -->
         <div id="emptyState" class="empty-state">
             Không có task nào. Nhập ở trên để bắt đầu.
+        </div>
+
+        <!-- Section tasks đã hoàn thành - collapsible -->
+        <div id="completedSection" class="completed-section" style="display: none;">
+            <button id="completedHeader" class="completed-header" type="button">
+                <span class="collapse-icon">▶</span>
+                <span id="completedTitle">Đã hoàn thành (0)</span>
+            </button>
+            <ul id="completedList" class="task-list completed-list" style="display: none;">
+                <!-- Tasks completed được render vào đây -->
+            </ul>
         </div>
     </div>
 

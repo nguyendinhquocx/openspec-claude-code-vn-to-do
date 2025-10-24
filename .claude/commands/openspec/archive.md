@@ -5,23 +5,23 @@ category: OpenSpec
 tags: [openspec, archive]
 ---
 <!-- OPENSPEC:START -->
-**Nguyên tắc bảo vệ**
-- Ưu tiên cách làm đơn giản, tối thiểu trước, chỉ thêm độ phức tạp khi được yêu cầu hoặc thực sự cần thiết.
-- Giữ phạm vi thay đổi chặt chẽ theo kết quả được yêu cầu.
-- Tham khảo `openspec/AGENTS.md` (nằm trong thư mục `openspec/`—chạy `ls openspec` hoặc `openspec update` nếu không thấy) nếu cần thêm quy ước hoặc làm rõ về OpenSpec.
+**Guardrails**
+- Favor straightforward, minimal implementations first and add complexity only when it is requested or clearly required.
+- Keep changes tightly scoped to the requested outcome.
+- Refer to `openspec/AGENTS.md` (located inside the `openspec/` directory—run `ls openspec` or `openspec update` if you don't see it) if you need additional OpenSpec conventions or clarifications.
 
-**Các bước thực hiện**
-1. Xác định change ID cần lưu trữ:
-   - Nếu prompt này đã bao gồm change ID cụ thể (ví dụ trong block `<ChangeId>` được điền bởi slash-command arguments), dùng giá trị đó sau khi trim khoảng trắng.
-   - Nếu cuộc trò chuyện tham chiếu change một cách lỏng lẻo (ví dụ bằng title hoặc summary), chạy `openspec list` để hiện các ID có thể, chia sẻ các ứng viên liên quan, và xác nhận cái nào người dùng muốn.
-   - Nếu không, xem lại cuộc trò chuyện, chạy `openspec list`, và hỏi người dùng change nào cần lưu trữ; đợi change ID được xác nhận trước khi tiếp tục.
-   - Nếu vẫn không thể xác định được một change ID duy nhất, dừng lại và nói với người dùng là chưa thể lưu trữ gì.
-2. Validate change ID bằng cách chạy `openspec list` (hoặc `openspec show <id>`) và dừng nếu change bị thiếu, đã được lưu trữ, hoặc chưa sẵn sàng để lưu trữ.
-3. Chạy `openspec archive <id> --yes` để CLI di chuyển change và áp dụng spec updates mà không cần nhắc (chỉ dùng `--skip-specs` cho công việc chỉ liên quan đến tooling).
-4. Xem lại command output để xác nhận các target specs đã được cập nhật và change đã đến `changes/archive/`.
-5. Validate với `openspec validate --strict` và kiểm tra với `openspec show <id>` nếu có gì trông không ổn.
+**Steps**
+1. Determine the change ID to archive:
+   - If this prompt already includes a specific change ID (for example inside a `<ChangeId>` block populated by slash-command arguments), use that value after trimming whitespace.
+   - If the conversation references a change loosely (for example by title or summary), run `openspec list` to surface likely IDs, share the relevant candidates, and confirm which one the user intends.
+   - Otherwise, review the conversation, run `openspec list`, and ask the user which change to archive; wait for a confirmed change ID before proceeding.
+   - If you still cannot identify a single change ID, stop and tell the user you cannot archive anything yet.
+2. Validate the change ID by running `openspec list` (or `openspec show <id>`) and stop if the change is missing, already archived, or otherwise not ready to archive.
+3. Run `openspec archive <id> --yes` so the CLI moves the change and applies spec updates without prompts (use `--skip-specs` only for tooling-only work).
+4. Review the command output to confirm the target specs were updated and the change landed in `changes/archive/`.
+5. Validate with `openspec validate --strict` and inspect with `openspec show <id>` if anything looks off.
 
-**Tham khảo**
-- Dùng `openspec list` để xác nhận change IDs trước khi lưu trữ.
-- Kiểm tra specs đã làm mới với `openspec list --specs` và giải quyết bất kỳ vấn đề validation nào trước khi bàn giao.
+**Reference**
+- Use `openspec list` to confirm change IDs before archiving.
+- Inspect refreshed specs with `openspec list --specs` and address any validation issues before handing off.
 <!-- OPENSPEC:END -->
